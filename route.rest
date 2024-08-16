@@ -27,3 +27,15 @@ Content-Type: application/json
 
 ###
 GET http://localhost:3000/users
+
+###
+POST http://localhost:3000/mail
+Content-Type: application/json
+
+{
+  "email": "mohamet.almeari@gmail.com",
+  "subject": "Test Email",
+  "message": "<p style='color: blue;'>Hello World! This is a <b>test email</b> from Jack.</p>",
+  "senderUsername": "contact",
+  "senderName": "Jack"
+}
