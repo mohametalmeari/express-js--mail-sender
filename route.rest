@@ -1,0 +1,17 @@
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "email": "admin@web-crafter.site",
+  "password": "admin",
+  "username": "admin"
+}
+
+###
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@web-crafter.site",
+  "password": "admin"
+}
