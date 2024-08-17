@@ -29,6 +29,11 @@ const send = async (req, res) => {
       html: message,
     });
 
+    const redirectUrl = req.query.redirect;
+    if (redirectUrl) {
+      return res.redirect(redirectUrl);
+    }
+
     return res.status(200).json(data);
   } catch (error) {
     console.log(error);

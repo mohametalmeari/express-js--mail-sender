@@ -2,9 +2,13 @@ const { getUserBySessionToken } = require("../db/users");
 
 const isAuthenticated = async (req, res, next) => {
   try {
+    const internalReq = !req.xhr && !req.headers.accept.includes("json");
+
     const sessionToken = req.cookies["AUTH"];
 
     if (!sessionToken) {
+      if (internalReq) return res.redirect("/sign-in");
+
       return res
         .status(403)
         .json({ message: "Unauthenticated, need to log in first" });
@@ -13,6 +17,8 @@ const isAuthenticated = async (req, res, next) => {
     const existingUser = await getUserBySessionToken(sessionToken);
 
     if (!existingUser) {
+      if (internalReq) return res.redirect("/sign-in");
+
       return res
         .status(403)
         .json({ message: "Unauthenticated, session has expired" });
@@ -28,9 +34,12 @@ const isAuthenticated = async (req, res, next) => {
 
 const isAdmin = async (req, res, next) => {
   try {
+    const internalReq = !req.xhr && !req.headers.accept.includes("json");
     const { role } = req.identity;
 
     if (role !== "admin") {
+      if (internalReq) return res.redirect("/sign-in");
+
       return res
         .status(403)
         .json({ message: "Unauthorized, admin access only" });

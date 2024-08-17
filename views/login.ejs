@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%- include('shared/styles') %>
+    <title>Mail Sender - Sing In</title>
+  </head>
+  <body>
+    <main class="container">
+      <h1>Sign In</h1>
+      <form action="/auth/login?redirect=/users" method="post" class="form">
+        <input type="email" name="email" placeholder="Your Email.." />
+        <input type="password" name="password" placeholder="Your Password.." />
+        <button type="submit">Sign In</button>
+      </form>
+    </main>
+  </body>
+</html>

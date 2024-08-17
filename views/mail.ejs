@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <%- include('shared/styles') %>
+    <title>Mail Sender</title>
+  </head>
+  <body>
+    <main class="container">
+      <h1>Mail Sender</h1>
+      <form action="/mail?redirect=/mail" method="post" class="form">
+        <div class="row">
+          <input
+            type="text"
+            name="senderUsername"
+            placeholder="Your Username.."
+          />
+          <input type="text" name="senderName" placeholder="Your Name.." />
+        </div>
+        <input type="email" name="email" placeholder="Send to.." />
+        <input type="text" name="subject" placeholder="Mail subject.." />
+        <textarea name="message" placeholder="Mail content.."></textarea>
+        <button type="submit">Send</button>
+      </form>
+    </main>
+  </body>
+</html>

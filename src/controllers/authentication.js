@@ -52,6 +52,9 @@ const register = async (req, res) => {
       secure: process.env.NODE_ENV === "production",
     });
 
+    const redirectUrl = req.query.redirect;
+    if (redirectUrl) return res.redirect(redirectUrl);
+
     return res.status(200).json(user);
   } catch (error) {
     console.error("Registration error:", error);
@@ -100,6 +103,9 @@ const login = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
     });
+
+    const redirectUrl = req.query.redirect;
+    if (redirectUrl) return res.redirect(redirectUrl);
 
     return res.status(200).json(user);
   } catch (error) {

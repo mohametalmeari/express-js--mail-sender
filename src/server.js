@@ -13,6 +13,8 @@ app.use(cors({ credentials: true }));
 app.use(compression());
 app.use(cookieParser());
 app.use(express.json());
+app.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: true }));
 
 mongoose.connect(process.env.MONGODB_URL);
 const db = mongoose.connection;
