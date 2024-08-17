@@ -114,4 +114,22 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+const logout = async (req, res) => {
+  try {
+    const user = req.identity;
+
+    user.authentication.sessionToken = null;
+    await user.save();
+
+    res.clearCookie("AUTH", {
+      domain: process.env.DOMAIN || "localhost",
+    });
+
+    return res.status(200).json({ message: "Successfully logged out" });
+  } catch (error) {
+    console.error("Login error:", error);
+    return res.status(500).json({ error: "An unexpected error occurred" });
+  }
+};
+
+module.exports = { register, login, logout };
