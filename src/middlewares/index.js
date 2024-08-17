@@ -2,7 +2,7 @@ const { getUserBySessionToken } = require("../db/users");
 
 const isAuthenticated = async (req, res, next) => {
   try {
-    const internalReq = !req.xhr && !req.headers.accept.includes("json");
+    const internalReq = !req?.xhr && !req?.headers?.accept?.includes("json");
 
     const sessionToken = req.cookies["AUTH"];
 
@@ -34,7 +34,7 @@ const isAuthenticated = async (req, res, next) => {
 
 const isAdmin = async (req, res, next) => {
   try {
-    const internalReq = !req.xhr && !req.headers.accept.includes("json");
+    const internalReq = !req?.xhr && !req?.headers?.accept?.includes("json");
     const { role } = req.identity;
 
     if (role !== "admin") {
