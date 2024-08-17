@@ -9,7 +9,7 @@
   <body>
     <main class="container">
       <h1>Mail Sender</h1>
-      <form action="/mail?redirect=/mail" method="post" class="form">
+      <form action="/mail?redirect=/mail" method="post" class="form" enctype="multipart/form-data">
         <div class="row">
           <input
             type="text"
@@ -21,6 +21,7 @@
         <input type="email" name="email" placeholder="Send to.." />
         <input type="text" name="subject" placeholder="Mail subject.." />
         <textarea name="message" placeholder="Mail content.."></textarea>
+        <input type="file" name="attachment" multiple>
         <button type="submit">Send</button>
       </form>
     </main>
