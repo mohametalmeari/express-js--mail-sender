@@ -1,12 +1,22 @@
 const { Resend } = require("resend");
-const { getMails, createMail, getMailsBySender } = require("../db/mails");
+const {
+  getMails,
+  createMail,
+  getMailsBySender,
+  getMailById,
+} = require("../db/mails");
 
 const MAX_TOTAL_SIZE = 40 * 1024 * 1024;
-const resend = new Resend(process.env.RESEND_API_KEY);
+
+const KEY = {
+  "mo-dev.site": process.env.RESEND_API_KEY__MO_DEV,
+  "web-crafter.site": process.env.RESEND_API_KEY__WEB_CRAFTER,
+};
 
 const send = async (req, res) => {
   try {
-    const { email, subject, message, senderName, senderUsername } = req.body;
+    const { email, subject, message, senderName, senderUsername, mailDomain } =
+      req.body;
 
     const totalSize = req?.files?.reduce((acc, file) => acc + file.size, 0);
     if (totalSize > MAX_TOTAL_SIZE) {
@@ -20,18 +30,21 @@ const send = async (req, res) => {
       content: file.buffer,
     }));
 
-    if (!email || !subject || !message) {
+    if (!email || !subject || !message || !mailDomain) {
       const missingFields = [];
       if (!email) missingFields.push("email");
       if (!subject) missingFields.push("subject");
       if (!message) missingFields.push("message");
+      if (!mailDomain) missingFields.push("mailDomain");
 
       return res.status(400).json({
         error: `Missing required fields: ${missingFields.join(", ")}`,
       });
     }
 
-    let sender = `${senderUsername || "admin"}@${process.env.MAIL_DOMAIN}`;
+    const resend = new Resend(KEY[mailDomain]);
+
+    let sender = `${senderUsername || "admin"}@${mailDomain}`;
     if (senderName) {
       sender = `${senderName} <${sender}>`;
     }
@@ -46,7 +59,7 @@ const send = async (req, res) => {
 
     await createMail({
       _id: data.data.id,
-      sender: `${senderUsername || "admin"}@${process.env.MAIL_DOMAIN}`,
+      sender: `${senderUsername || "admin"}@${mailDomain}`,
     });
 
     const redirectUrl = req.query.redirect;
@@ -64,6 +77,15 @@ const send = async (req, res) => {
 const show = async (req, res) => {
   try {
     const { id } = req.params;
+
+    const mail = await getMailById(id);
+    if (!mail) {
+      return res.status(404).json({ error: "Mail not found" });
+    }
+
+    const mail_domain = mail.sender.split("@")[1];
+    const resend = new Resend(KEY[mail_domain]);
+
     const data = await resend.emails.get(id);
 
     return res.status(200).json(data);

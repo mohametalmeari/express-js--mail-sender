@@ -10,19 +10,29 @@
     <%- include('shared/navbar', {active: "mail"}); %>
     <main class="container">
       <h1>Mail Sender</h1>
-      <form action="/mail?redirect=/mail" method="post" class="form" enctype="multipart/form-data">
+      <form
+        action="/mail?redirect=/mail"
+        method="post"
+        class="form"
+        enctype="multipart/form-data"
+      >
+        <input
+          type="text"
+          name="senderName"
+          placeholder="Your Name.. (Optional)"
+        />
         <div class="row">
-          <input
-            type="text"
-            name="senderUsername"
-            placeholder="Your Username.."
-          />
-          <input type="text" name="senderName" placeholder="Your Name.." />
+          <input type="text" name="senderUsername" placeholder="admin" />
+          @
+          <select name="mailDomain">
+            <option value="mo-dev.site">mo-dev.site</option>
+            <option value="web-crafter.site">web-crafter.site</option>
+          </select>
         </div>
         <input type="email" name="email" placeholder="Send to.." />
         <input type="text" name="subject" placeholder="Mail subject.." />
         <textarea name="message" placeholder="Mail content.."></textarea>
-        <input type="file" name="attachment" multiple>
+        <input type="file" name="attachment" multiple />
         <button type="submit">Send</button>
       </form>
     </main>
