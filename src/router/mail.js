@@ -1,4 +1,4 @@
-const { send } = require("../controllers/mail");
+const { send, show, list, listBySender } = require("../controllers/mail");
 const { isAuthenticated, isAdmin } = require("../middlewares");
 const multer = require("multer");
 
@@ -13,4 +13,7 @@ module.exports = (router) => {
     upload.array("attachment"),
     send
   );
+  router.get("/mail/:id", isAuthenticated, isAdmin, show);
+  router.get("/list-mails", isAuthenticated, isAdmin, list);
+  router.get("/list-mails/:sender", isAuthenticated, isAdmin, listBySender);
 };

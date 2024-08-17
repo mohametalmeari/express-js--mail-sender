@@ -1,4 +1,5 @@
 const { Resend } = require("resend");
+const { getMails, createMail, getMailsBySender } = require("../db/mails");
 
 const MAX_TOTAL_SIZE = 40 * 1024 * 1024;
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -43,6 +44,11 @@ const send = async (req, res) => {
       attachments,
     });
 
+    await createMail({
+      _id: data.data.id,
+      sender: `${senderUsername || "admin"}@${process.env.MAIL_DOMAIN}`,
+    });
+
     const redirectUrl = req.query.redirect;
     if (redirectUrl) {
       return res.redirect(redirectUrl);
@@ -55,4 +61,37 @@ const send = async (req, res) => {
   }
 };
 
-module.exports = { send };
+const show = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = await resend.emails.get(id);
+
+    return res.status(200).json(data);
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(400);
+  }
+};
+
+const list = async (_req, res) => {
+  try {
+    const mails = await getMails();
+    return res.status(200).json(mails);
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(400);
+  }
+};
+
+const listBySender = async (req, res) => {
+  try {
+    const { sender } = req.params;
+    const mails = await getMailsBySender(sender);
+    return res.status(200).json(mails);
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(400);
+  }
+};
+
+module.exports = { send, show, list, listBySender };
