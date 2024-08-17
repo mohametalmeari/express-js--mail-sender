@@ -1,0 +1,16 @@
+<nav class="navbar">
+  <ul class="navmenu">
+    <li>
+      <a href="/mail" <%= locals.active === 'mail' ? 'class=active' : '' %> >Mail</a>
+    </li>
+    <li>
+      <a href="/sign-up" <%= locals.active === 'signup' ? 'class=active' : '' %> >Sign Up</a>
+    </li>
+    <li>
+      <a href="/sign-in" <%= locals.active === 'singin' ? 'class=active' : '' %> >Sign In</a>
+    </li>
+    <li>
+      <a href="/users" >Users</a>
+    </li>
+  </ul>
+</nav>

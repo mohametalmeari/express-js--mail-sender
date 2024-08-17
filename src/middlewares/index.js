@@ -52,4 +52,23 @@ const isAdmin = async (req, res, next) => {
   }
 };
 
-module.exports = { isAuthenticated, isAdmin };
+const isLoggedOut = async (req, res, next) => {
+  try {
+    const internalReq = !req?.xhr && !req?.headers?.accept?.includes("json");
+
+    const sessionToken = req.cookies["AUTH"];
+    if (!sessionToken) return next();
+
+    const existingUser = await getUserBySessionToken(sessionToken);
+    if (!existingUser) return next();
+
+    if (internalReq) return res.redirect("/");
+
+    return res.status(403).json({ message: "Already authenticated" });
+  } catch (error) {
+    console.error("Authorization error:", error);
+    return res.status(500).json({ message: "An unexpected error occurred" });
+  }
+};
+
+module.exports = { isAuthenticated, isAdmin, isLoggedOut };

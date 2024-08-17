@@ -7,6 +7,7 @@
     <title>Mail Sender</title>
   </head>
   <body>
+    <%- include('shared/navbar', {active: "mail"}); %>
     <main class="container">
       <h1>Mail Sender</h1>
       <form action="/mail?redirect=/mail" method="post" class="form" enctype="multipart/form-data">

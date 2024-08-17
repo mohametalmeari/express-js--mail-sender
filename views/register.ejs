@@ -7,9 +7,10 @@
     <title>Mail Sender - Sing Up</title>
   </head>
   <body>
+    <%- include('shared/navbar', {active: "signup"}); %>
     <main class="container">
       <h1>Create New Account</h1>
-      <form action="/auth/register?redirect=/users" method="post" class="form">
+      <form action="/auth/register?redirect=/" method="post" class="form">
         <input type="email" name="email" placeholder="Your Email.." />
         <input type="text" name="username" placeholder="Your Username.." />
         <input type="password" name="password" placeholder="Your Password.." />
