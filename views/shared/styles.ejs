@@ -1,7 +1,6 @@
 <style>
   .container {
     margin-top: 20px;
-    color: red;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -14,8 +13,6 @@
     align-items: stretch;
     justify-content: center;
     gap: 1rem;
-    width: 100%;
-    max-width: 400px;
   }
 
   .form input,
@@ -74,6 +71,53 @@
   }
 
   .navmenu .active {
-    color: red;
+    color: cornflowerblue;
+  }
+
+  .mails {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    max-height: 70vh;
+    overflow-y: scroll;
+    align-self: self-start;
+  }
+
+  .mail-link {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .mail {
+    display: none;
+    flex-direction: column;
+  }
+
+  .layout {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    width: 100%;
+    max-width: 1000px;
+  }
+
+  .layout > * {
+    flex: 1;
+  }
+
+  .mails::-webkit-scrollbar {
+    direction: ltr;
+  }
+
+  .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 0.5rem;
+    text-decoration: none;
+    color: darkslateblue;
   }
 </style>

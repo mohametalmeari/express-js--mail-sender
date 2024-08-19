@@ -17,6 +17,8 @@ const isAuthenticated = async (req, res, next) => {
     const existingUser = await getUserBySessionToken(sessionToken);
 
     if (!existingUser) {
+      res.clearCookie("AUTH");
+      res.clearCookie("isAuth");
       if (internalReq) return res.redirect("/sign-in");
 
       return res

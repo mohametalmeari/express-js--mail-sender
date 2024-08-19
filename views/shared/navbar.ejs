@@ -1,13 +1,17 @@
 <nav class="navbar">
-  <ul class="navmenu">
-    <li>
-      <a href="/mail" <%= locals.active === 'mail' ? 'class=active' : '' %> >Mail</a>
-    </li>
+  <a href="/" class="logo">Home</a>
+  
+  <ul class="navmenu" id="no-auth-menu">
     <li>
       <a href="/sign-up" <%= locals.active === 'signup' ? 'class=active' : '' %> >Sign Up</a>
     </li>
     <li>
-      <a href="/sign-in" <%= locals.active === 'singin' ? 'class=active' : '' %> >Sign In</a>
+      <a href="/sign-in" <%= locals.active === 'signin' ? 'class=active' : '' %> >Sign In</a>
+    </li>
+  </ul>
+  <ul class="navmenu" id="auth-menu">
+    <li>
+      <a href="/mail" <%= locals.active === 'mail' ? 'class=active' : '' %> >Mail</a>
     </li>
     <li>
       <a href="/users" >Users</a>
@@ -17,3 +21,24 @@
     </li>
   </ul>
 </nav>
+
+<script>
+  const cookies = document.cookie.split(';').reduce((acc, cookie) => {
+    const [key, value] = cookie.split('=');
+    acc[key.trim()] = value;
+    return acc;
+  }, {});
+  
+  const noAuthMenu = document.getElementById("no-auth-menu");
+  const authMenu = document.getElementById("auth-menu");
+
+  const isAuth = cookies['isAuth'];
+  if (isAuth) {
+    noAuthMenu.style.display = "none";
+    authMenu.style.display = "flex";
+  } else {
+    noAuthMenu.style.display = "flex";
+    authMenu.style.display = "none";
+  }
+
+</script>

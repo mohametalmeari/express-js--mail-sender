@@ -52,6 +52,11 @@ const register = async (req, res) => {
       secure: process.env.NODE_ENV === "production",
     });
 
+    res.cookie("isAuth", true, {
+      domain: process.env.DOMAIN || "localhost",
+      path: "/",
+    });
+
     const redirectUrl = req.query.redirect;
     if (redirectUrl) return res.redirect(redirectUrl);
 
@@ -104,6 +109,11 @@ const login = async (req, res) => {
       secure: process.env.NODE_ENV === "production",
     });
 
+    res.cookie("isAuth", true, {
+      domain: process.env.DOMAIN || "localhost",
+      path: "/",
+    });
+
     const redirectUrl = req.query.redirect;
     if (redirectUrl) return res.redirect(redirectUrl);
 
@@ -116,14 +126,17 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
+    const internalReq = !req?.xhr && !req?.headers?.accept?.includes("json");
+
     const user = req.identity;
 
     user.authentication.sessionToken = null;
     await user.save();
 
-    res.clearCookie("AUTH", {
-      domain: process.env.DOMAIN || "localhost",
-    });
+    res.clearCookie("AUTH");
+    res.clearCookie("isAuth");
+
+    if (internalReq) return res.redirect("/sign-in");
 
     return res.status(200).json({ message: "Successfully logged out" });
   } catch (error) {

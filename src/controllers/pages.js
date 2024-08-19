@@ -10,4 +10,8 @@ const mailPage = (_req, res) => {
   return res.render("mail");
 };
 
-module.exports = { registerPage, loginPage, mailPage };
+const homePage = (_req, res) => {
+  return res.render("home");
+};
+
+module.exports = { registerPage, loginPage, mailPage, homePage };

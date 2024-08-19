@@ -52,7 +52,7 @@ const send = async (req, res) => {
     const data = await resend.emails.send({
       from: sender,
       to: [email],
-      subject: subject,
+      subject,
       html: message,
       attachments,
     });
@@ -60,6 +60,8 @@ const send = async (req, res) => {
     await createMail({
       _id: data.data.id,
       sender: `${senderUsername || "admin"}@${mailDomain}`,
+      recipient: email,
+      subject,
     });
 
     const redirectUrl = req.query.redirect;

@@ -9,32 +9,94 @@
   <body>
     <%- include('shared/navbar', {active: "mail"}); %>
     <main class="container">
+      <% let isSendMode = true; %>
       <h1>Mail Sender</h1>
-      <form
-        action="/mail?redirect=/mail"
-        method="post"
-        class="form"
-        enctype="multipart/form-data"
-      >
-        <input
-          type="text"
-          name="senderName"
-          placeholder="Your Name.. (Optional)"
-        />
-        <div class="row">
-          <input type="text" name="senderUsername" placeholder="admin" />
-          @
-          <select name="mailDomain">
-            <option value="mo-dev.site">mo-dev.site</option>
-            <option value="web-crafter.site">web-crafter.site</option>
-          </select>
+      <div class="layout">
+        <div class="mails" id="mails">
+          <!-- Mails will be displayed here -->
         </div>
-        <input type="email" name="email" placeholder="Send to.." />
-        <input type="text" name="subject" placeholder="Mail subject.." />
-        <textarea name="message" placeholder="Mail content.."></textarea>
-        <input type="file" name="attachment" multiple />
-        <button type="submit">Send</button>
-      </form>
+        <div class="mail"></div>
+        <form
+          id="mail-form"
+          action="/mail?redirect=/mail"
+          method="post"
+          class="form"
+          enctype="multipart/form-data"
+        >
+          <input
+            type="text"
+            name="senderName"
+            placeholder="Your Name.. (Optional)"
+          />
+          <div class="row">
+            <input type="text" name="senderUsername" placeholder="admin" />
+            @
+            <select name="mailDomain">
+              <option value="mo-dev.site">mo-dev.site</option>
+              <option value="web-crafter.site">web-crafter.site</option>
+            </select>
+          </div>
+          <input type="email" name="email" placeholder="Send to.." />
+          <input type="text" name="subject" placeholder="Mail subject.." />
+          <textarea name="message" placeholder="Mail content.."></textarea>
+          <input type="file" name="attachment" multiple />
+          <button type="submit">Send</button>
+        </form>
+      </div>
     </main>
+    <script>
+      const mailForm = document.getElementById("mail-form");
+      const mailContainer = document.querySelector(".mail");
+      const closeMail = () => {
+        mailContainer.innerHTML = "";
+        mailContainer.style.display = "none";
+        mailForm.style.display = "flex";
+      };
+      const mailsContainer = document.getElementById("mails");
+      mailsContainer.onclick = async (e) => {
+        const mailLink = e.target.closest(".mail-link");
+        const mailId = mailLink.dataset.id;
+
+        const res = await fetch(`/mail/${mailId}`);
+        const mail = await res.json().then((m) => m.data);
+        mailForm.style.display = "none";
+        mailContainer.innerHTML = `
+        <div>
+          <div style="display: flex;">
+            ${
+              mail.last_event === "delivered"
+                ? "<span style='color: green;'>Delivered</span>"
+                : "<span style='color: red;'>Not Delivered</span>"
+            }
+            <div style="flex: 1;"></div>
+            <button style='background: none; outline: none; border: none; cursor: pointer;' onclick="closeMail()">&#10060;</button>
+          </div>
+          <h4>From: ${mail.from
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")}</h4>
+          <h4>To: ${mail.to[0]}</h4>
+          <h2>${mail.subject || "No Subject"}</h2>
+          <p>${mail.html || "No Message"}</p>
+        `;
+        mailContainer.style.display = "flex";
+      };
+      const getMails = async () => {
+        const url = "/list-mails";
+        const res = await fetch(url);
+        const mails = await res.json();
+
+        mailsContainer.innerHTML = mails
+          .reverse()
+          .map((mail) => {
+            return `
+            <div class="mail-link" data-id='${mail._id}'>
+              <h3>${mail.subject || "No Subject"}</h3>
+              <h4>From: ${mail.sender} - To: ${mail.recipient || ".."}</h4>
+            </div>`;
+          })
+          .join("");
+      };
+      getMails();
+    </script>
   </body>
 </html>
