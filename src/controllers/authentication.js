@@ -52,6 +52,14 @@ const register = async (req, res) => {
       secure: process.env.NODE_ENV === "production",
     });
 
+    res.cookie("isAuth", true, {
+      domain: process.env.DOMAIN || "localhost",
+      path: "/",
+    });
+
+    const redirectUrl = req.query.redirect;
+    if (redirectUrl) return res.redirect(redirectUrl);
+
     return res.status(200).json(user);
   } catch (error) {
     console.error("Registration error:", error);
@@ -101,6 +109,14 @@ const login = async (req, res) => {
       secure: process.env.NODE_ENV === "production",
     });
 
+    res.cookie("isAuth", true, {
+      domain: process.env.DOMAIN || "localhost",
+      path: "/",
+    });
+
+    const redirectUrl = req.query.redirect;
+    if (redirectUrl) return res.redirect(redirectUrl);
+
     return res.status(200).json(user);
   } catch (error) {
     console.error("Login error:", error);
@@ -108,4 +124,25 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+const logout = async (req, res) => {
+  try {
+    const internalReq = !req?.xhr && !req?.headers?.accept?.includes("json");
+
+    const user = req.identity;
+
+    user.authentication.sessionToken = null;
+    await user.save();
+
+    res.clearCookie("AUTH");
+    res.clearCookie("isAuth");
+
+    if (internalReq) return res.redirect("/sign-in");
+
+    return res.status(200).json({ message: "Successfully logged out" });
+  } catch (error) {
+    console.error("Login error:", error);
+    return res.status(500).json({ error: "An unexpected error occurred" });
+  }
+};
+
+module.exports = { register, login, logout };

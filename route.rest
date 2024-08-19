@@ -37,5 +37,15 @@ Content-Type: application/json
   "subject": "Test Email",
   "message": "<p style='color: blue;'>Hello World! This is a <b>test email</b> from Jack.</p>",
   "senderUsername": "contact",
-  "senderName": "Jack"
+  "senderName": "Jack",
+  "mailDomain": "web-crafter.site"
 }
+
+###
+GET http://localhost:3000/mail/f0e610e3-de21-48f2-9231-b1311165c92b
+
+###
+GET http://localhost:3000/list-mails
+
+###
+GET http://localhost:3000/list-mails/contact@web-crafter.site

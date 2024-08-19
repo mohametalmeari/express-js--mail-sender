@@ -1,0 +1,123 @@
+<style>
+  .container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .form input,
+  .form textarea,
+  .form select {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    flex: 1;
+  }
+
+  .form textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .form button {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+  }
+
+  .form button:hover {
+    background-color: #e0e0e0;
+  }
+
+  .row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .navbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f0f0f0;
+  }
+
+  .navmenu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    list-style: none;
+  }
+
+  .navmenu a {
+    text-decoration: none;
+  }
+
+  .navmenu .active {
+    color: cornflowerblue;
+  }
+
+  .mails {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    max-height: 70vh;
+    overflow-y: scroll;
+    align-self: self-start;
+  }
+
+  .mail-link {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .mail {
+    display: none;
+    flex-direction: column;
+  }
+
+  .layout {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    width: 100%;
+    max-width: 1000px;
+  }
+
+  .layout > * {
+    flex: 1;
+  }
+
+  .mails::-webkit-scrollbar {
+    direction: ltr;
+  }
+
+  .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 0.5rem;
+    text-decoration: none;
+    color: darkslateblue;
+  }
+</style>
